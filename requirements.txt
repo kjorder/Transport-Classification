@@ -2,7 +2,6 @@
 streamlit==1.36.0
 fastai==2.8.0
 fastcore=1.8.6
-fasttransform==1.0.0
 fastprogress==1.0.3
 fastdownload==0.0.7
 
@@ -11,6 +10,7 @@ torch
 torchvision
 pillow
 matplotlib
+
 
 
 
