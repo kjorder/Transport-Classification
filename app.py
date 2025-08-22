@@ -1,6 +1,7 @@
 import streamlit as st
 from fastai.vision.all import *
 # After
+pip install fasttransform
 from fasttransform import Transform, Pipeline
 import pathlib
 temp = pathlib.PosixPath
