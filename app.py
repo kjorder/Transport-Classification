@@ -1,28 +1,22 @@
 import streamlit as st
-from fastai.vision.all import *
-import pathlib
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+from pathlib import Path
+from fastai.learner import load_learner
+from PIL import Image
 
-# title
-st.title('Mashina, Samalyot va Kemani klassifikatsiya qiluvchi model')
+@st.cache_resource
+def load_model():
+    p = Path(__file__).parent / "modelll.pkl"   # yoki modelll_new.pkl
+    learn = load_learner(p)
+    return learn
 
-# rasm yuklash
-file = st.file_uploader('Rasm yuklang:', type=['png', 'jpeg'])
+st.title("Image Classifier")
 
-if file:
-    st.image(file)
-    
-    #PIL conver
-    img = PILImage.create(file)
+uploaded = st.file_uploader("Rasm yuklang", type=["jpg","jpeg","png"])
+if uploaded:
+    img = Image.open(uploaded).convert("RGB")
+    st.image(img, caption="Yuklangan rasm", use_column_width=True)
+    learn = load_model()
+    pred, pred_idx, probs = learn.predict(img)
+    st.success(f"Natija: {pred} ({float(probs[pred_idx])*100:.1f}%)")
 
-    # modelni chaqirish
-    model = load_learner('modelll.pkl')
-
-    # bashorat qilish
-    pred, pred_id, probs = model.predict(img)
-
-    # natijani chiqarish
-    st.success(f"Bashorat: {pred}")
-    st.info(f"Ehtimollik: {probs[pred_id]*100:.1f}%")
 
